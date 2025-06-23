@@ -21,14 +21,21 @@ export default function Home() {
     try {
       const res = await fetch(`${BACKEND}/getProduct.php`)
       if (!res.ok) throw new Error(`Error: ${res.status}`)
-      const data = await res.json()
+      type ProductResponse = {
+        id: string | number
+        name: string
+        price: string | number
+      }
+
+      const data: ProductResponse[] = await res.json()
       setProducts(
-        data.map((p: any) => ({
+        data.map(p => ({
           id: Number(p.id),
-          name: String(p.name),
+          name: p.name,
           price: Number(p.price),
         }))
       )
+
     } catch (err) {
       if (err instanceof Error) setError(err.message)
       else setError('Unknown error')
