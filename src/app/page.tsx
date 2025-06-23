@@ -21,8 +21,12 @@ export default function Home() {
         if (!res.ok) throw new Error(`Error: ${res.status}`)
         const data = await res.json()
         setProducts(data)
-      } catch (err: any) {
-        setError(err.message || 'Unknown error')
+      } catch (err) {
+        if (err instanceof Error) {
+          setError(err.message)
+        } else {
+          setError('Unknown error')
+        }
       } finally {
         setLoading(false)
       }
